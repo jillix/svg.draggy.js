@@ -35,11 +35,11 @@ rect.beforestart = function(event) {
 }
 ```
 
-The `dragstart`, `dragmove` and `dragend` callbacks will pass the delta values as an object in the first argument and the event as the second:
+The `dragstart`, `dragmove` and `dragend` callbacks will pass the delta values (also containing an object holding the absolute coordinates) as an object in the first argument and the event as the second:
 
 ```javascript
 rect.dragmove = function(delta, event) {
-  console.log(delta.x, delta.y)
+  console.log(delta.x, delta.y, delta.coord.x, delta.coord.y)
 }
 ```
 
@@ -61,6 +61,20 @@ For more dynamic constraints a function can be passed as well:
 rect.draggable(function(x, y) {
   return { x: x < 1000, y: y < 300 }
 })
+```
+
+With this you can also easily achieve some snapping functionality:
+
+```javascript
+var snapRange = 50;
+rect.draggable(function (x, y, elem) {
+	var res = {};
+
+	res.x = x - (x % snapRange);
+	res.y = y - (y % snapRange);
+
+	return res;
+});
 ```
 
 
