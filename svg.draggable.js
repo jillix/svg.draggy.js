@@ -58,11 +58,7 @@
 
                 // Invoke any callbacks
                 if (element.dragstart) {
-                    element.dragstart({
-                        x: 0,
-                        y: 0,
-                        zoom: element.startPosition.zoom
-                    }, event);
+                    element.node.dispatchEvent(new CustomEvent('dragstart', delta, event));
                 }
 
                 // Prevent selection dragging
@@ -126,7 +122,7 @@
 
                     // Invoke any callbacks
                     if (element.dragmove) {
-                        element.dragmove(delta, event);
+                        element.node.dispatchEvent(new CustomEvent('dragmove', delta, event));
                     }
                 }
             };
@@ -152,7 +148,7 @@
 
                 // Invoke any callbacks
                 if (element.dragend) {
-                    element.dragend(delta, event);
+                    element.node.dispatchEvent(new CustomEvent('dragend', delta, event));
                 }
             };
 
