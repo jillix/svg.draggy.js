@@ -6,25 +6,25 @@
         draggable: function(constraint) {
             var start, drag, end, element = this;
 
-            /* remove draggable if already present */
-            if (typeof this.fixed === 'function') {
+            // Remove draggable if already present
+            if (typeof this.fixed === "function") {
                 this.fixed();
             }
 
-            /* ensure constraint object */
+            // Ensure constraint object
             constraint = constraint || {};
 
-            /* start dragging */
+            // Start dragging
             start = function(event) {
                 var parent = this.parent._parent(SVG.Nested) || this._parent(SVG.Doc);
                 event = event || window.event;
 
-                /* invoke any callbacks */
+                // Invoke any callbacks
                 if (element.beforedrag) {
                     element.beforedrag(event);
                 }
 
-                /* get element bounding box */
+                // Get element bounding box
                 var box = element.bbox();
 
                 if (element instanceof SVG.G) {
@@ -39,24 +39,24 @@
                     };
                 }
 
-                /* store event */
+                // Store event
                 element.startEvent = event;
 
-                /* store start position */
+                // Store start position
                 element.startPosition = {
                     x: box.x,
                     y: box.y,
                     width: box.width,
                     height: box.height,
                     zoom: parent.viewbox().zoom,
-                    rotation: element.transform('rotation') * Math.PI / 180
+                    rotation: element.transform("rotation") * Math.PI / 180
                 };
 
-                /* add while and end events to window */
-                SVG.on(window, 'mousemove', drag);
-                SVG.on(window, 'mouseup', end);
+                // Add while and end events to window
+                SVG.on(window, "mousemove", drag);
+                SVG.on(window, "mouseup", end);
 
-                /* invoke any callbacks */
+                // Invoke any callbacks
                 if (element.dragstart) {
                     element.dragstart({
                         x: 0,
@@ -65,7 +65,7 @@
                     }, event);
                 }
 
-                /* prevent selection dragging */
+                // Prevent selection dragging
                 if (event.preventDefault) {
                     event.preventDefault();
                 } else {
@@ -74,12 +74,12 @@
 
             };
 
-            /* while dragging */
+            // While dragging
             drag = function(event) {
                 event = event || window.event;
 
                 if (element.startEvent) {
-                    /* calculate move position */
+                    // Calculate move position
                     var x, y, rotation = element.startPosition.rotation,
                         width = element.startPosition.width,
                         height = element.startPosition.height,
@@ -89,26 +89,26 @@
                             zoom: element.startPosition.zoom
                         };
 
-                    /* caculate new position [with rotation correction] */
+                    // Caculate new position [with rotation correction]
                     x = element.startPosition.x + (delta.x * Math.cos(rotation) + delta.y * Math.sin(rotation)) / element.startPosition.zoom;
                     y = element.startPosition.y + (delta.y * Math.cos(rotation) + delta.x * Math.sin(-rotation)) / element.startPosition.zoom;
 
-                    /* move the element to its new position, if possible by constraint */
-                    if (typeof constraint === 'function') {
+                    // Move the element to its new position, if possible by constraint
+                    if (typeof constraint === "function") {
                         var coord = constraint(x, y);
 
-                        if (typeof coord === 'object') {
-                            if (typeof coord.x !== 'boolean' || coord.x) {
-                                element.x(typeof coord.x === 'number' ? coord.x : x);
-                            } else if (typeof coord.y !== 'boolean' || coord.y) {
-                                element.y(typeof coord.y === 'number' ? coord.y : y);
+                        if (typeof coord === "object") {
+                            if (typeof coord.x !== "boolean" || coord.x) {
+                                element.x(typeof coord.x === "number" ? coord.x : x);
+                            } else if (typeof coord.y !== "boolean" || coord.y) {
+                                element.y(typeof coord.y === "number" ? coord.y : y);
                             }
-                        } else if (typeof coord === 'boolean' && coord) {
+                        } else if (typeof coord === "boolean" && coord) {
                             element.move(x, y);
                         }
 
-                    } else if (typeof constraint === 'object') {
-                        /* keep element within constrained box */
+                    } else if (typeof constraint === "object") {
+                        // Keep element within constrained box
                         if (constraint.minX !== null && x < constraint.minX) {
                             x = constraint.minX;
                         } else if (constraint.maxX !== null && x > constraint.maxX - width) {
@@ -124,47 +124,47 @@
                         element.move(x, y);
                     }
 
-                    /* invoke any callbacks */
+                    // Invoke any callbacks
                     if (element.dragmove) {
                         element.dragmove(delta, event);
                     }
                 }
             };
 
-            /* when dragging ends */
+            // When dragging ends
             end = function(event) {
                 event = event || window.event;
 
-                /* calculate move position */
+                // Calculate move position
                 var delta = {
                     x: event.pageX - element.startEvent.pageX,
                     y: event.pageY - element.startEvent.pageY,
                     zoom: element.startPosition.zoom
                 };
 
-                /* reset store */
+                // Reset store
                 element.startEvent = null;
                 element.startPosition = null;
 
-                /* remove while and end events to window */
-                SVG.off(window, 'mousemove', drag);
-                SVG.off(window, 'mouseup', end);
+                // Remove while and end events to window
+                SVG.off(window, "mousemove", drag);
+                SVG.off(window, "mouseup", end);
 
-                /* invoke any callbacks */
+                // Invoke any callbacks
                 if (element.dragend) {
                     element.dragend(delta, event);
                 }
             };
 
-            /* bind mousedown event */
-            element.on('mousedown', start);
+            // Bind mousedown event
+            element.on("mousedown", start);
 
-            /* disable draggable */
+            // Disable draggable
             element.fixed = function() {
-                element.off('mousedown', start);
+                element.off("mousedown", start);
 
-                SVG.off(window, 'mousemove', drag);
-                SVG.off(window, 'mouseup', end);
+                SVG.off(window, "mousemove", drag);
+                SVG.off(window, "mouseup", end);
 
                 start = drag = end = null;
 
