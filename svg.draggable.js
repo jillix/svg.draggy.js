@@ -143,7 +143,7 @@
                 SVG.off(window, "mouseup", end);
 
                 // Invoke any callbacks
-                element.node.dispatchEvent(new CustomEvent("dragend", { x: 0, y: 0, zoom: element.startPosition.zoom }, event));
+                element.node.dispatchEvent(new CustomEvent("dragend", { x: 0, y: 0 }, event));
             };
 
             // Bind mousedown event
