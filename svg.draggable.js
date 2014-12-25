@@ -57,9 +57,7 @@
                 SVG.on(window, "mouseup", end);
 
                 // Invoke any callbacks
-                if (element.dragstart) {
-                    element.node.dispatchEvent(new CustomEvent("dragstart", event));
-                }
+                element.node.dispatchEvent(new CustomEvent("dragstart", event));
 
                 // Prevent selection dragging
                 if (event.preventDefault) {
@@ -121,9 +119,7 @@
                     }
 
                     // Invoke any callbacks
-                    if (element.dragmove) {
-                        element.node.dispatchEvent(new CustomEvent("dragmove", delta, event));
-                    }
+                    element.node.dispatchEvent(new CustomEvent("dragmove", delta, event));
                 }
             };
 
@@ -147,9 +143,7 @@
                 SVG.off(window, "mouseup", end);
 
                 // Invoke any callbacks
-                if (element.dragend) {
-                    element.node.dispatchEvent(new CustomEvent("dragend", { x: 0, y: 0, zoom: element.startPosition.zoom }, event));
-                }
+                element.node.dispatchEvent(new CustomEvent("dragend", { x: 0, y: 0, zoom: element.startPosition.zoom }, event));
             };
 
             // Bind mousedown event
