@@ -20,7 +20,7 @@ Yes indeed, that's it! Now the `rect` is draggable.
 There are four different callbacks available, `beforedrag`, `dragstart`, `dragmove` and `dragend`. This is how you assign them:
 
 ```javascript
-rect.on("dragstart", function(delta, event) {
+rect.on("dragstart", function(event) {
     // Do something
 });
 ```
@@ -28,7 +28,7 @@ rect.on("dragstart", function(delta, event) {
 The `beforedrag` callback will pass the event in the first argument:
 
 ```javascript
-rect.on("beforedrag", function(delta, event) {
+rect.on("beforedrag", function(event) {
     // Do something
 });
 ```
