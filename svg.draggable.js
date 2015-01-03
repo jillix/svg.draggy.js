@@ -68,6 +68,18 @@
 
             };
 
+            function elmZoom(elm) {
+                if (!elm || typeof elm.transform !== "function") { return { x: 1, y: 1 }; }
+                var p = elm.parent;
+                var t = elm.transform();
+                pz = {};
+                var pz = elmZoom(p)
+                return {
+                    x: t.scaleX * pz.x,
+                    y: t.scaleY * pz.y
+                }
+            }
+
             // While dragging
             drag = function(event) {
                 event = event || window.event;
@@ -83,9 +95,10 @@
                             zoom: element.startPosition.zoom
                         };
 
-                    // Caculate new position [with rotation correction]
-                    x = element.startPosition.x + (delta.x * Math.cos(rotation) + delta.y * Math.sin(rotation)) / element.startPosition.zoom;
-                    y = element.startPosition.y + (delta.y * Math.cos(rotation) + delta.x * Math.sin(-rotation)) / element.startPosition.zoom;
+                    var zoom = elmZoom(element);
+
+                    x = element.startPosition.x + (delta.x * Math.cos(rotation) + delta.y * Math.sin(rotation)) / Math.pow(zoom.x, 2);
+                    y = element.startPosition.y + (delta.y * Math.cos(rotation) + delta.x * Math.sin(-rotation)) / Math.pow(zoom.y, 2);
 
                     // Move the element to its new position, if possible by constraint
                     if (typeof constraint === "function") {
