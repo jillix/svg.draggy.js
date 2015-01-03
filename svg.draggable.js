@@ -94,14 +94,24 @@
                         height = element.startPosition.height,
                         delta = {
                             x: event.pageX - element.startEvent.pageX,
-                            y: event.pageY - element.startEvent.pageY,
-                            zoom: element.startPosition.zoom
+                            y: event.pageY - element.startEvent.pageY
                         };
 
-                    var zoom = elmZoom(element);
+                    if (/^touchstart|touchmove$/.test(event.type)) {
+                        delta.x = event.touches[0].pageX - element.startEvent.touches[0].pageX;
+                        delta.y = event.touches[0].pageY - element.startEvent.touches[0].pageY;
+                    } else if(/^click|mousedown|mousemove$/.test(event.type)) {
+                        delta.x = event.pageX - element.startEvent.pageX;
+                        delta.y = event.pageY - element.startEvent.pageY;
+                    } else {
+                        delta.x = event.pageX - element.startEvent.pageX;
+                        delta.y = event.pageY - element.startEvent.pageY;
+                    }
 
-                    x = element.startPosition.x + (delta.x * Math.cos(rotation) + delta.y * Math.sin(rotation)) / Math.pow(zoom.x, 2);
-                    y = element.startPosition.y + (delta.y * Math.cos(rotation) + delta.x * Math.sin(-rotation)) / Math.pow(zoom.y, 2);
+                    delta.scale = elmZoom(element);
+
+                    x = element.startPosition.x + (delta.x * Math.cos(rotation) + delta.y * Math.sin(rotation)) / Math.pow(delta.scale.x, 2);
+                    y = element.startPosition.y + (delta.y * Math.cos(rotation) + delta.x * Math.sin(-rotation)) / Math.pow(delta.scale.y, 2);
 
                     // Move the element to its new position, if possible by constraint
                     if (typeof constraint === "function") {
