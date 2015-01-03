@@ -54,7 +54,10 @@
 
                 // Add while and end events to window
                 SVG.on(window, "mousemove", drag);
+                SVG.on(window, "touchmove", drag);
+
                 SVG.on(window, "mouseup", end);
+                SVG.on(window, "touchend", end);
 
                 // Invoke any callbacks
                 element.node.dispatchEvent(new CustomEvent("dragstart", event));
@@ -73,11 +76,11 @@
                 var p = elm.parent;
                 var t = elm.transform();
                 pz = {};
-                var pz = elmZoom(p)
+                var pz = elmZoom(p);
                 return {
                     x: t.scaleX * pz.x,
                     y: t.scaleY * pz.y
-                }
+                };
             }
 
             // While dragging
@@ -91,14 +94,24 @@
                         height = element.startPosition.height,
                         delta = {
                             x: event.pageX - element.startEvent.pageX,
-                            y: event.pageY - element.startEvent.pageY,
-                            zoom: element.startPosition.zoom
+                            y: event.pageY - element.startEvent.pageY
                         };
 
-                    var zoom = elmZoom(element);
+                    if (/^touchstart|touchmove$/.test(event.type)) {
+                        delta.x = event.touches[0].pageX - element.startEvent.touches[0].pageX;
+                        delta.y = event.touches[0].pageY - element.startEvent.touches[0].pageY;
+                    } else if(/^click|mousedown|mousemove$/.test(event.type)) {
+                        delta.x = event.pageX - element.startEvent.pageX;
+                        delta.y = event.pageY - element.startEvent.pageY;
+                    } else {
+                        delta.x = event.pageX - element.startEvent.pageX;
+                        delta.y = event.pageY - element.startEvent.pageY;
+                    }
 
-                    x = element.startPosition.x + (delta.x * Math.cos(rotation) + delta.y * Math.sin(rotation)) / Math.pow(zoom.x, 2);
-                    y = element.startPosition.y + (delta.y * Math.cos(rotation) + delta.x * Math.sin(-rotation)) / Math.pow(zoom.y, 2);
+                    delta.scale = elmZoom(element);
+
+                    x = element.startPosition.x + (delta.x * Math.cos(rotation) + delta.y * Math.sin(rotation)) / Math.pow(delta.scale.x, 2);
+                    y = element.startPosition.y + (delta.y * Math.cos(rotation) + delta.x * Math.sin(-rotation)) / Math.pow(delta.scale.y, 2);
 
                     // Move the element to its new position, if possible by constraint
                     if (typeof constraint === "function") {
@@ -153,7 +166,9 @@
 
                 // Remove while and end events to window
                 SVG.off(window, "mousemove", drag);
+                SVG.off(window, "touchmove", drag);
                 SVG.off(window, "mouseup", end);
+                SVG.off(window, "touchend", end);
 
                 // Invoke any callbacks
                 element.node.dispatchEvent(new CustomEvent("dragend", { x: 0, y: 0 }, event));
@@ -161,13 +176,17 @@
 
             // Bind mousedown event
             element.on("mousedown", start);
+            element.on("touchstart", start);
 
             // Disable draggable
             element.fixed = function() {
                 element.off("mousedown", start);
+                element.off("touchstart", start);
 
                 SVG.off(window, "mousemove", drag);
+                SVG.off(window, "touchmove", drag);
                 SVG.off(window, "mouseup", end);
+                SVG.off(window, "touchend", end);
 
                 start = drag = end = null;
 
