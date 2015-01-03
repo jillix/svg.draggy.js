@@ -54,7 +54,10 @@
 
                 // Add while and end events to window
                 SVG.on(window, "mousemove", drag);
+                SVG.on(window, "touchmove", drag);
+
                 SVG.on(window, "mouseup", end);
+                SVG.on(window, "touchend", end)
 
                 // Invoke any callbacks
                 element.node.dispatchEvent(new CustomEvent("dragstart", event));
@@ -153,7 +156,9 @@
 
                 // Remove while and end events to window
                 SVG.off(window, "mousemove", drag);
+                SVG.off(window, "touchmove", drag);
                 SVG.off(window, "mouseup", end);
+                SVG.off(window, "touchend", end);
 
                 // Invoke any callbacks
                 element.node.dispatchEvent(new CustomEvent("dragend", { x: 0, y: 0 }, event));
@@ -161,13 +166,17 @@
 
             // Bind mousedown event
             element.on("mousedown", start);
+            element.on("touchstart", start);
 
             // Disable draggable
             element.fixed = function() {
                 element.off("mousedown", start);
+                element.off("touchstart", start);
 
                 SVG.off(window, "mousemove", drag);
+                SVG.off(window, "touchmove", drag);
                 SVG.off(window, "mouseup", end);
+                SVG.off(window, "touchend", end);
 
                 start = drag = end = null;
 
