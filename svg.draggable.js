@@ -57,7 +57,7 @@
                 SVG.on(window, "touchmove", drag);
 
                 SVG.on(window, "mouseup", end);
-                SVG.on(window, "touchend", end)
+                SVG.on(window, "touchend", end);
 
                 // Invoke any callbacks
                 element.node.dispatchEvent(new CustomEvent("dragstart", event));
@@ -76,11 +76,11 @@
                 var p = elm.parent;
                 var t = elm.transform();
                 pz = {};
-                var pz = elmZoom(p)
+                var pz = elmZoom(p);
                 return {
                     x: t.scaleX * pz.x,
                     y: t.scaleY * pz.y
-                }
+                };
             }
 
             // While dragging
