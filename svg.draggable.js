@@ -103,9 +103,6 @@
                     } else if(/^click|mousedown|mousemove$/.test(event.type)) {
                         delta.x = event.pageX - element.startEvent.pageX;
                         delta.y = event.pageY - element.startEvent.pageY;
-                    } else {
-                        delta.x = event.pageX - element.startEvent.pageX;
-                        delta.y = event.pageY - element.startEvent.pageY;
                     }
 
                     delta.scale = elmZoom(element);
