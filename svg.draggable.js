@@ -60,7 +60,7 @@
                 SVG.on(window, "touchend", end);
 
                 // Invoke any callbacks
-                element.node.dispatchEvent(new CustomEvent("dragstart", event));
+                element.node.dispatchEvent(new CustomEvent("dragstart", { detail: { event: event }}));
 
                 // Prevent selection dragging
                 if (event.preventDefault) {
@@ -142,7 +142,7 @@
                     }
 
                     // Invoke any callbacks
-                    element.node.dispatchEvent(new CustomEvent("dragmove", delta, event));
+                    element.node.dispatchEvent(new CustomEvent("dragmove", { detail: { delta: delta, event: event } }));
                 }
             };
 
@@ -168,7 +168,7 @@
                 SVG.off(window, "touchend", end);
 
                 // Invoke any callbacks
-                element.node.dispatchEvent(new CustomEvent("dragend", { x: 0, y: 0 }, event));
+                element.node.dispatchEvent(new CustomEvent("dragend", { detail: { delta: { x: 0, y: 0 }, event: event }}));
             };
 
             // Bind mousedown event
