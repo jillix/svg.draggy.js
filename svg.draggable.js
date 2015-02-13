@@ -60,7 +60,7 @@
                 SVG.on(window, "touchend", end);
 
                 // Invoke any callbacks
-                element.node.dispatchEvent(new CustomEvent("dragstart", { detail: { event: event, delta: { x: 0, y: 0 }}));
+                element.node.dispatchEvent(new CustomEvent("dragstart", { detail: { event: event, delta: { x: 0, y: 0 } }}));
 
                 // Prevent selection dragging
                 if (event.preventDefault) {
