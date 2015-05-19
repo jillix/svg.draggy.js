@@ -116,13 +116,22 @@
 
                         if (typeof coord === "object") {
                             if (typeof coord.x !== "boolean" || coord.x) {
-                                element.x(typeof coord.x === "number" ? coord.x : x);
+                                x = typeof coord.x === "number" ? coord.x : x;
+                                element.x(x);
+                            }else{ //coord.x === false
+                                x = element.x();
                             }
                             if (typeof coord.y !== "boolean" || coord.y) {
-                                element.y(typeof coord.y === "number" ? coord.y : y);
+                                y = typeof coord.y === "number" ? coord.y : y;
+                                element.y(y);
+                            }else{ //coord.y === false
+                                y = element.y();
                             }
                         } else if (typeof coord === "boolean" && coord) {
                             element.move(x, y);
+                        }else{ // coord === false
+                            x = element.x();
+                            y = element.y();
                         }
 
                     } else if (typeof constraint === "object") {
@@ -141,6 +150,9 @@
 
                         element.move(x, y);
                     }
+                    // Calculate the total movement from the start
+                    delta.movedX = x - element.startPosition.x;
+                    delta.movedY = y - element.startPosition.y;
 
                     // Invoke any callbacks
                     element.node.dispatchEvent(new CustomEvent("dragmove", { detail: { delta: delta, event: event } }));
