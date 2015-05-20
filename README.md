@@ -20,7 +20,9 @@ There are four different events available you can llisten to: `beforedrag`, `dra
 
 The `event` object has some custom data added by this library:
 
- - `event.detail.delta` is an object containing the `x` and `y` values
+ - `event.detail.delta` is an object containing:
+  - `x` and `y`: The element coordinates.
+  - `movedX` and `movedY`: The element total movement values (available only in `dragmove` event).
  - `event.detail.event` is an object containing the original event
 
 #### `dragstart`
