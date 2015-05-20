@@ -1,8 +1,10 @@
 # svg.draggy.js
 A JavaScript library for dragging SVG things.
 
+[![](http://i.imgur.com/tXn2w8f.jpg)](http://jillix.github.io/svg.draggy.js/)
+
 ## Usage
-Include this library after including `svg.js` in your html document.
+Include this library after including `svg.js` in your html document. [Here you can see a demo](http://jillix.github.io/svg.draggy.js/).
 
 To make an element draggable, just do:
 
