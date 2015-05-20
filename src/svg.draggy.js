@@ -137,18 +137,26 @@
                     // Move the element to its new position, if possible by constraint
                     if (typeof constraint === "function") {
                         var coord = constraint(x, y);
-
                         if (typeof coord === "object") {
                             if (typeof coord.x !== "boolean" || coord.x) {
-                                element.x(typeof coord.x === "number" ? coord.x : x);
+                                x = typeof coord.x === "number" ? coord.x : x;
+                                element.x(x);
+                            } else {
+                                x = element.x();
                             }
+
                             if (typeof coord.y !== "boolean" || coord.y) {
-                                element.y(typeof coord.y === "number" ? coord.y : y);
+                                y = typeof coord.y === "number" ? coord.y : y;
+                                element.y(y);
+                            } else {
+                                y = element.y();
                             }
                         } else if (typeof coord === "boolean" && coord) {
                             element.move(x, y);
+                        } else {
+                            x = element.x();
+                            y = element.y();
                         }
-
                     } else if (typeof constraint === "object") {
                         // Keep element within constrained box
                         if (constraint.minX !== null && x < constraint.minX) {
@@ -165,6 +173,10 @@
 
                         element.move(x, y);
                     }
+
+                    // Calculate the total movement
+                    delta.movedX = x - element.startPosition.x;
+                    delta.movedY = y - element.startPosition.y;
 
                     // Invoke any callbacks
                     element.node.dispatchEvent(new CustomEvent("dragmove", {
