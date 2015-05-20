@@ -1,10 +1,24 @@
 (function() {
     SVG.extend(SVG.Element, {
-        // Make element draggable
-        // Constraint might be a object (as described in readme.md) or a function in the form "function (x, y)" that gets called before every move.
-        // The function can return a boolean or a object of the form {x, y}, to which the element will be moved. "False" skips moving, true moves to raw x, y.
-        draggy: function(constraint) {
-            var start, drag, end, element = this;
+        /**
+         * draggy
+         * Makes an element draggable.
+         *
+         * @name draggy
+         * @function
+         * @param {Object|Function} constraint An object containing the
+         * constraint values or a function which gets the `x` and `y` values
+         * and returns a boolean or an object containing the `x` and `y`
+         * boolean values.`false` skips moving while `true` allows it.
+         * @return {SVG} The SVG element.
+         */
+        draggy: function (constraint) {
+
+            var start
+              , drag
+              , end
+              , element = this
+              ;
 
             // Remove draggable if already present
             if (typeof this.fixed === "function") {
