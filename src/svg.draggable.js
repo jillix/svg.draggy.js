@@ -3,7 +3,7 @@
         // Make element draggable
         // Constraint might be a object (as described in readme.md) or a function in the form "function (x, y)" that gets called before every move.
         // The function can return a boolean or a object of the form {x, y}, to which the element will be moved. "False" skips moving, true moves to raw x, y.
-        draggable: function(constraint) {
+        draggy: function(constraint) {
             var start, drag, end, element = this;
 
             // Remove draggable if already present
