@@ -20,6 +20,12 @@
     "svg"
   ],
   "author": "jillix <contact@jillix.com>",
+  "contributors": [
+      "Ionică Bizău <bizauionica@gmail.com>",
+      "Wout Fierens <wout@impinc.co.uk>",
+      "Florian Loch <florian.loch@gmail.com>",
+      "Christian Vonarnim <christian.vonarnim@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jillix/svg.draggy.js/issues"
