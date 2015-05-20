@@ -1,23 +1,24 @@
 window.addEventListener("load", function () {
     var svg = new SVG(document.querySelector(".graph")).size("100%", 500);
-    svg.circle(80).fill("#C2185B").draggy();
-    svg.circle(50).fill("#E91E63");
-    svg.circle(100).fill("#FF5252");
 
     // Plain draggy
-    svg.rect(100, 100).center(150, 150).draggy();
+    svg.rect(70, 100)
+       .center(70, 90)
+       .fill("#388E3C")
+       .draggy()
+       ;
 
     // Grouped draggy
     var group = svg.group().draggy();
-    group.rect(100, 100).center(200, 150);
-    group.rect(100, 100).center(200, 270);
+    group.rect(100, 100).center(180, 90).fill("#4CAF50");
+    group.rect(100, 100).center(180, 200).fill("#C8E6C9");
 
     // Constraind with object
-    var elm = draw.rect(100,100).center(650, 150).draggy({
-        minX: 400
+    var elm = svg.rect(100,100).fill("#8BC34A").center(290, 90).draggy({
+        minX: 200
       , minY: 50
-      , maxX: 800
-      , maxY: 400
+      , maxX: 600
+      , maxY: 200
     });
 
     var s = null
@@ -26,22 +27,20 @@ window.addEventListener("load", function () {
 
     elm.on("dragstart", function() {
       s = elm.clone().opacity(0.2);
-      t = draw.rect(400, 350).move(400, 50).fill('none').stroke('#0fa');
     });
 
     elm.on("dragmove", function() {
-      s.animate(200, '>').move(e.x(), e.y());
+      s.animate(200, '>').move(elm.x(), elm.y());
     });
 
     elm.on("dragend", function() {
-      t.remove();
       s.remove();
     });
 
     // Constraind with function
-    draw.rect(100,100).center(900, 150).draggy(function(x, y) {
+    svg.rect(100,100).fill("#009688").center(70, 220).draggy(function(x, y) {
         return {
-            x: x < 1000
+            x: x < 400
           , y: y < 300
         };
     });
