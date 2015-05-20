@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "cp src/svg.draggy.min.js example/js/svg.draggy.js && git add example && git commit -m 'Updated svg.draggy.js in the example dir' . && cp -r example ../_tmp && git checkout gh-pages && cp -r ../_tmp/* . && git add . -A && git commit -m 'Rebuild.'"
+    "update-min": "cp src/svg.draggy.min.js example/js/svg.draggy.js && git add example && git commit -m 'Updated svg.draggy.js in the example dir' ."
+    "deploy": "cp -r example ../_tmp && git checkout gh-pages && cp -r ../_tmp/* . && git add . -A && git commit -m 'Rebuild.' && rm -rf ../_tmp ../_tmp.js"
   },
   "repository": {
     "type": "git",
