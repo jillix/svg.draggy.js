@@ -141,7 +141,8 @@
                         if (typeof coord === "object") {
                             if (typeof coord.x !== "boolean" || coord.x) {
                                 element.x(typeof coord.x === "number" ? coord.x : x);
-                            } else if (typeof coord.y !== "boolean" || coord.y) {
+                            }
+                            if (typeof coord.y !== "boolean" || coord.y) {
                                 element.y(typeof coord.y === "number" ? coord.y : y);
                             }
                         } else if (typeof coord === "boolean" && coord) {
