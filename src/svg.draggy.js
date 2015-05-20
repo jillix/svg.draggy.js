@@ -46,10 +46,10 @@
                     box.y = element.y();
                 } else if (element instanceof SVG.Nested) {
                     box = {
-                        x: element.x(),
-                        y: element.y(),
-                        width: element.width(),
-                        height: element.height()
+                        x: element.x()
+                      , y: element.y()
+                      , width: element.width()
+                      , height: element.height()
                     };
                 }
 
@@ -58,12 +58,12 @@
 
                 // Store start position
                 element.startPosition = {
-                    x: box.x,
-                    y: box.y,
-                    width: box.width,
-                    height: box.height,
-                    zoom: parent.viewbox().zoom,
-                    rotation: element.transform("rotation") * Math.PI / 180
+                    x: box.x
+                  , y: box.y
+                  , width: box.width
+                  , height: box.height
+                  , zoom: parent.viewbox().zoom
+                  , rotation: element.transform("rotation") * Math.PI / 180
                 };
 
                 // Add while and end events to window
@@ -74,7 +74,15 @@
                 SVG.on(window, "touchend", end);
 
                 // Invoke any callbacks
-                element.node.dispatchEvent(new CustomEvent("dragstart", { detail: { event: event, delta: { x: 0, y: 0 } }}));
+                element.node.dispatchEvent(new CustomEvent("dragstart", {
+                    detail: {
+                        event: event
+                      , delta: {
+                            x: 0
+                          , y: 0
+                        }
+                    }
+                }));
 
                 // Prevent selection dragging
                 if (event.preventDefault) {
@@ -82,7 +90,6 @@
                 } else {
                     event.returnValue = false;
                 }
-
             };
 
             function elmZoom(elm) {
@@ -92,8 +99,8 @@
                 pz = {};
                 var pz = elmZoom(p);
                 return {
-                    x: t.scaleX * pz.x,
-                    y: t.scaleY * pz.y
+                    x: t.scaleX * pz.x
+                  , y: t.scaleY * pz.y
                 };
             }
 
@@ -103,13 +110,16 @@
 
                 if (element.startEvent) {
                     // Calculate move position
-                    var x, y, rotation = element.startPosition.rotation,
-                        width = element.startPosition.width,
-                        height = element.startPosition.height,
-                        delta = {
-                            x: event.pageX - element.startEvent.pageX,
-                            y: event.pageY - element.startEvent.pageY
-                        };
+                    var x
+                      , y
+                      , rotation = element.startPosition.rotation
+                      , width = element.startPosition.width
+                      , height = element.startPosition.height
+                      , delta = {
+                            x: event.pageX - element.startEvent.pageX
+                          , y: event.pageY - element.startEvent.pageY
+                        }
+                      ;
 
                     if (/^touchstart|touchmove$/.test(event.type)) {
                         delta.x = event.touches[0].pageX - element.startEvent.touches[0].pageX;
@@ -156,7 +166,12 @@
                     }
 
                     // Invoke any callbacks
-                    element.node.dispatchEvent(new CustomEvent("dragmove", { detail: { delta: delta, event: event } }));
+                    element.node.dispatchEvent(new CustomEvent("dragmove", {
+                        detail: {
+                            delta: delta
+                          , event: event
+                        }
+                    }));
                 }
             };
 
@@ -166,9 +181,9 @@
 
                 // Calculate move position
                 var delta = {
-                    x: event.pageX - element.startEvent.pageX,
-                    y: event.pageY - element.startEvent.pageY,
-                    zoom: element.startPosition.zoom
+                    x: event.pageX - element.startEvent.pageX
+                  , y: event.pageY - element.startEvent.pageY
+                  , zoom: element.startPosition.zoom
                 };
 
                 // Reset store
@@ -182,7 +197,15 @@
                 SVG.off(window, "touchend", end);
 
                 // Invoke any callbacks
-                element.node.dispatchEvent(new CustomEvent("dragend", { detail: { delta: { x: 0, y: 0 }, event: event }}));
+                element.node.dispatchEvent(new CustomEvent("dragend", {
+                    detail: {
+                        delta: {
+                            x: 0
+                          , y: 0
+                        }
+                      , event: event
+                    }
+                }));
             };
 
             // Bind mousedown event
